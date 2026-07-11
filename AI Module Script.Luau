@@ -395,7 +395,6 @@ function Monster.SetupStatus(monster:mytype)
 end	
 
 
-local waitingtime = 2
 function Monster.ManagerNormalMove(monster)
 	local currenttime = os.clock()
 	local lasttargetsearch:number = monster.lasttargetsearch or -math.huge 
