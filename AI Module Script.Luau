@@ -90,7 +90,7 @@ local function VisibleDebugingHitBox(monster:mytype)
 	part.Parent = folder
 	game.Debris:AddItem(part, 0.2)
 end
-
+--تعليق    
 local function VisibleDebugingWaypoints(monster:mytype, ID )
 	local folder = game.Workspace:FindFirstChild("VisibleWaypointsfolder") ::Folder?
 	if not folder then
