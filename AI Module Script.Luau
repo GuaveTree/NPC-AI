@@ -36,17 +36,17 @@ local Normal: {[string]:any}= {
 	AttackRange = 2.5,
 	Speed = 10,
 	PathInfo = {
-		AgentRadius = 2,       
-		AgentHeight = 5,      
-		AgentCanJump = true,    
-		AgentCanClimb = false,   
+		AgentRadius = 2,
+		AgentHeight = 5,
+		AgentCanJump = true,
+		AgentCanClimb = false,
 		WaypointSpacing = 5,
 		Costs = {
 			Water = 20,
 			DangerZone = math.huge
 		}
 	}
-} 
+}
 
 setmetatable(Monster, {__index = Normal})
 --------------------------------------
@@ -93,7 +93,7 @@ end
 
 local function VisibleDebugingWaypoints(monster:mytype, ID )
 	local folder = game.Workspace:FindFirstChild("VisibleWaypointsfolder") ::Folder?
-	if not folder then 
+	if not folder then
 		folder = Instance.new("Folder") :: Folder
 		folder.Name = "VisibleWaypointsfolder"
 		folder.Parent = workspace
@@ -102,7 +102,7 @@ local function VisibleDebugingWaypoints(monster:mytype, ID )
 
 
 	local Waypionts = monster.waypoints :: {PathWaypoint}?
-	if not Waypionts then return end 
+	if not Waypionts then return end
 
 	for _, waypiont:PathWaypoint in ipairs(Waypionts) do
 		local part = Instance.new("Part")
@@ -128,16 +128,16 @@ function Monster.CreateNewMonster(info: {[string|Instance]: any}) :mytype?
 
 	local self = setmetatable({}, Monster)
 
-	self.Name = info.Name 
-	self.Body = info.Body 
-	self.Health = info.Health 
-	self.Attack = info.Attack 
-	self.Defense = info.Defense 
-	self.AttackCooldown = info.AttackCooldown 
-	self.Range = info.Range 
-	self.AttackRange = info.AttackRange 
-	self.Speed = info.Speed 
-	self.HitboxSize = info.HitboxSize 
+	self.Name = info.Name
+	self.Body = info.Body
+	self.Health = info.Health
+	self.Attack = info.Attack
+	self.Defense = info.Defense
+	self.AttackCooldown = info.AttackCooldown
+	self.Range = info.Range
+	self.AttackRange = info.AttackRange
+	self.Speed = info.Speed
+	self.HitboxSize = info.HitboxSize
 	self.pathID = info.pathID or 0
 	self.waypoints = info.waypoints or {}
 	self.PathInfo = info.PathInfo
@@ -160,7 +160,7 @@ function Monster.GetMonsterInfo(currentmonster: mytype) : {[string]: any}
 		AttackCooldown = currentmonster.AttackCooldown,
 		Range = currentmonster.Range,
 		Speed = currentmonster.Speed,
-	} 
+	}
 end
 
 
@@ -199,7 +199,7 @@ function Monster.PerformAttack(monster:mytype)
 	end
 
 	local currentTime = os.clock()
-	-- loop 
+	-- loop
 	for _, hit in ipairs(hitpartslist) do
 
 		local hitparent = hit.Parent
@@ -253,7 +253,7 @@ local function FindTarget(monster: mytype, playerslist: {Player}): Model?
 	local MaxDistance = monster.Range
 	local targetDistance:number = math.huge
 
-	if #playerslist < 1 then print("error num 1021") return nil end 
+	if #playerslist < 1 then print("error num 1021") return nil end
 	for _, player:Player in ipairs(playerslist) do
 		local character = player.Character ::Model?
 		if not character then continue end
@@ -275,7 +275,7 @@ local function FindTarget(monster: mytype, playerslist: {Player}): Model?
 	end
 	if not target then return nil end
 
-	return target 
+	return target
 end
 
 -- العصب الحي للنظام او فارس العصب للأندومي😎😎
@@ -311,7 +311,7 @@ function Monster.FindPath(monster:mytype, target:Model)
 		if DebugMode then
 			VisibleDebugingWaypoints(monster, monster.pathID)
 		end
-	end 
+	end
 end
 
 function Monster.Moveing(monster:mytype, myId:number)
@@ -325,8 +325,8 @@ function Monster.Moveing(monster:mytype, myId:number)
 	local rootpart = body:FindFirstChild("HumanoidRootPart") :: BasePart?
 	local waypoints = monster.waypoints ::{PathWaypoint}?
 
-	if not humanoid or not rootpart then 
-		return 
+	if not humanoid or not rootpart then
+		return
 	end
 
 	if not waypoints or #waypoints < 2 then
@@ -336,7 +336,7 @@ function Monster.Moveing(monster:mytype, myId:number)
 
 	for i = 3, #waypoints do
 
-		if humanoid.Health <= 0  then
+		if humanoid.Health <= 0 then
 			return
 		end
 
@@ -352,7 +352,7 @@ function Monster.Moveing(monster:mytype, myId:number)
 
 		local timein = os.clock()
 
-		repeat 
+		repeat
 
 			if myId ~= monster.pathID then
 				return
@@ -397,10 +397,10 @@ end
 
 function Monster.ManagerNormalMove(monster)
 	local currenttime = os.clock()
-	local lasttargetsearch:number = monster.lasttargetsearch or -math.huge 
+	local lasttargetsearch:number = monster.lasttargetsearch or -math.huge
 
 	local needtaregt = not monster.target or (currenttime - lasttargetsearch) > waitingtime
-	if needtaregt  then
+	if needtaregt then
 		monster.lasttargetsearch = currenttime
 		local newtarget = FindTarget(monster, Players:GetPlayers())
 		if needtaregt then
@@ -412,15 +412,15 @@ function Monster.ManagerNormalMove(monster)
 
 
 	local target = monster.target ::Model
-	local targethuman 
-	local targetroot 
+	local targethuman
+	local targetroot
 	if target then
 		targethuman = target:FindFirstChild("Humanoid") :: Humanoid?
 		targetroot = target:FindFirstChild("HumanoidRootPart") :: BasePart?
 	end
 
 
-	if not targethuman or not targetroot or targethuman.Health <= 0 then 
+	if not targethuman or not targetroot or targethuman.Health <= 0 then
 		monster.target = nil
 		monster.waypoints = nil :: any
 		return
